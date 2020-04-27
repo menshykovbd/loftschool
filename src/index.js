@@ -12,8 +12,12 @@
 
  Другими словами: функция должна возвращать в неизменном виде то, что поступает ей на вход
  */
-function returnFirstArgument() {
+function returnFirstArgument(arg1) {
+  return arg1;
 }
+
+var resultReturnFirstArgument = returnFirstArgument("Привет");
+// console.log(resultReturnFirstArgument);
 
 /*
  Задание 2:
@@ -30,7 +34,15 @@ function returnFirstArgument() {
    sumWithDefaults(10) вернет 110
  */
 function sumWithDefaults(a, b) {
+  if (b == undefined) {
+      b = 100;
+  }
+
+  return a + b;
 }
+
+var resultSumWithDefaults = sumWithDefaults(10);
+// console.log(resultSumWithDefaults);
 
 /*
  Задание 3:
@@ -41,7 +53,11 @@ function sumWithDefaults(a, b) {
    returnFnResult(() => 'привет') вернет 'привет'
  */
 function returnFnResult(fn) {
+  return fn();
 }
+
+var resultReturnFnResult = returnFnResult(() => 'привет123')
+// console.log(resultReturnFnResult);
 
 /*
  Задание 4:
@@ -56,8 +72,21 @@ function returnFnResult(fn) {
    console.log(f()); // выведет 12
    console.log(f()); // выведет 13
  */
-function returnCounter(number) {
+var counter = 10;
+var f = returnCounter(counter);
+
+function returnCounter(a) {
+  function F(b) {
+    b++;
+    return b;
+  }
+  return counter = F(a);
 }
+// console.log(f);
+f = returnCounter(counter);
+// console.log(f);
+f = returnCounter(counter);
+// console.log(f);
 
 /*
  Задание 5 *:
@@ -69,7 +98,15 @@ function returnCounter(number) {
    returnArgumentsArray(1, 2, 3) вернет [1, 2, 3]
  */
 function returnArgumentsArray() {
+  var arr = [];
+  for (let index = 0; index < arguments.length; index++) {
+    arr.push(arguments[index]);
+  }
+  return arr;
 }
+
+var resultReturnArgumentsArray = returnArgumentsArray(1, 2, 3, 5, 7);
+// console.log(resultReturnArgumentsArray);
 
 /*
  Задание 6 *:
@@ -86,8 +123,16 @@ function returnArgumentsArray() {
 
    console.log(newSum()) выведет 6
  */
-function bindFunction(fn) {
+function bindFunction(fn, a, b) {
+  return fn(a, b);
 }
+
+function sum(a, b) {
+  return a + b;
+}
+
+var newSum = bindFunction(sum, 2, 4);
+// console.log(newSum);
 
 export {
     returnFirstArgument,
