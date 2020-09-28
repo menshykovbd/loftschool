@@ -33,10 +33,7 @@ function isAllTrue(array, fn) {
 }
 
 isAllTrue([1, 2, 3, 4, 5], n => n < 10);
-<<<<<<< HEAD
 isAllTrue([100, 2, 3, 4, 5], n => n < 10);
-=======
->>>>>>> b05694a757208e39f04d1e28f3b67b7efbe5c567
 
 /*
  Задание 2:
