@@ -18,14 +18,18 @@
  */
 function isAllTrue(array, fn) {
   try {
+    for (let i; i < array.length; i++) {
+      console.log(fn(array[i]));
+      fn(array[i]);
+    }
     if (!array){
       throw new Error("empty array")
     }
+    return true;
   } catch (e) {
     console.log(e.message())
+    return false;
   }
-  console.log(1);
-  return true;
 }
 
 isAllTrue([1, 2, 3, 4, 5], n => n < 10);
