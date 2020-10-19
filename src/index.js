@@ -18,27 +18,21 @@
  */
 
 function isAllTrue(array, fn) {
-    try {
-        if (!Array.isArray(array)) {
-            throw new Error('empty array');
-        } else if (!array.length) {
-            throw new Error('empty array');
-        } else if (typeof fn !== 'function') {
-            throw new Error('fn is not a function');
-        }
-    } catch (e) {
-        console.log(e);
+    if (!(array instanceof Array) || array.length === 0) {
+        throw new Error('empty array');
     }
 
-	let result = true;
+    if (typeof fn !== 'function') {
+        throw new Error('fn is not a function');
+    }
 	
     for (let i = 0; i < array.length; i++) {
-        if (fn(array[i]) == false) {
-            result = false;
+        if (!fn(array[i])) {
+            return false;
         }
     }
 
-  	return result;
+  	return true;
 };
 
 /*
@@ -59,27 +53,21 @@ function isAllTrue(array, fn) {
  */
 
 function isSomeTrue(array, fn) {
-	try {
-        if (!Array.isArray(array)) {
-            throw new Error('empty array');
-        } else if (!array.length) {
-            throw new Error('empty array');
-        } else if (typeof fn !== 'function') {
-            throw new Error('fn is not a function');
-        }
-    } catch (e) {
-        console.log(e);
+	if (!(array instanceof Array) || array.length === 0) {
+        throw new Error('empty array');
     }
 
-	let result = false;
+    if (typeof fn !== 'function') {
+        throw new Error('fn is not a function');
+    }
 	
     for (let i = 0; i < array.length; i++) {
-        if (fn(array[i]) == true) {
-            result = true;
+        if (fn(array[i])) {
+            return true;
         }
     }
 
-  	return result;
+  	return false;
 }
 
 /*
@@ -94,23 +82,21 @@ function isSomeTrue(array, fn) {
    - fn не является функцией (с текстом "fn is not a function")
  */
 function returnBadArguments(fn, ...args) {
-	try {
-		if (typeof fn !== 'function') {
-            throw new Error('fn is not a function');
-        }
-    } catch (e) {
-        console.log(e);
+    if (typeof fn !== 'function') {
+        throw new Error('fn is not a function');
     }
 
-	let newArr = [];
-	
-    for (let i = 0; i < args.length; i++) {
-        if (fn(args[i]) == false) {
-            newArr.push(args[i]);
+    let arr = [];
+    
+    args.forEach((item) => {
+        try {
+            fn(item);
+        } catch (e) {
+            arr.push(item);
         }
-    }
+    })
 
-  	return newArr;
+  	return arr;
 }
 
 /*
@@ -130,43 +116,25 @@ function returnBadArguments(fn, ...args) {
    - number не является числом (с текстом "number is not a number")
    - какой-либо из аргументов div является нулем (с текстом "division by 0")
  */
-function calculator(number = 0, ...args) {
-	let obj = {
-		sum: function() {
-			for (let i = 0; i < args.length; i++) {
-				number += args[i];
-			}
-			return number;
-		},
-		dif: function() {
-			for (let i = 0; i < args.length; i++) {
-				number -= args[i];
-			}
-			return number;
-		},
-		div: function() {
-			for (let i = 0; i < args.length; i++) {
-				number = number / args[i];
-			}
-			return number;
-		},
-		mul: function() {
-			for (let i = 0; i < args.length; i++) {
-				number = number * args[i];
-			}
-			return number;
-		}
-	};
+function calculator(number = 0) {
+    if (typeof number !== 'number') {
+        throw new Error('number is not a number');
+    }
 
-	try {
-		if (typeof number !== 'number') {
-			throw new Error('number is not a number');
-		}
-	} catch (e) {
-		console.log(e);
-	}
+	return {
+		sum: (...args) => args.reduce((arg, current) => arg + current, number),
+        dif: (...args) => args.reduce((arg, current) => arg - current, number),
+        mul: (...args) => args.reduce((arg, current) => arg * current, number),
+        div: (...args) => args.reduce(
+            (arg, current) => {
+                if(current === 0) {
+                    throw new Error('division by 0');
+                }
 
-	return obj;
+                return arg / current;
+            },
+            number),
+    };
 }
 
 /* При решении задач, пострайтесь использовать отладчик */
