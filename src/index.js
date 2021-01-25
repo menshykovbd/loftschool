@@ -30,27 +30,31 @@ function delayPromise(seconds) {
    loadAndSortTowns().then(towns => console.log(towns)) // должна вывести в консоль отсортированный массив городов
  */
 function loadAndSortTowns() {
+  const url = 'https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json';
+
   return new Promise((resolve) => {
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json", true);
-    xhr.onload = function(e) {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          let cities = [];
-          let toObj = JSON.parse(xhr.responseText);
-          for (let city of toObj) {
-            cities.push(city.name);
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('GET', url);
+    xhr.responseType = 'json';
+    xhr.addEventListener('load', () => {
+      
+      resolve(xhr.response.sort(function (a, b) {
+          if (a.name > b.name) {
+              return 1;
           }
-          return resolve(cities.sort());
-        }
-      } 
-    }
-    xhr.onerror = function (e) {
-      console.error(xhr.statusText);
-    }
-    xhr.send(null);
+          if (a.name < b.name) {
+              return -1;
+          }
+
+          return 0;
+      }));
+    });
+    xhr.send()
   })
 }
+
+// loadAndSortTowns();
 
 loadAndSortTowns()
   .then(towns => console.log(towns))
